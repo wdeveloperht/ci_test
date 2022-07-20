@@ -30,6 +30,15 @@ class Home extends CI_Controller {
       'active_products_dont_any_user' => $active_products_dont_any_user
     ];
 
+
+    $this->pageData['user_products'] = $this->mGlobal->getUserProducts();
+    $this->pageData['active_attached_products'] = $this->mGlobal->getActiveAttachedProducts();
+    $this->pageData['active_products_per_user'] = $this->mGlobal->getActiveProductsPerUser();
+
+    // get exchange rates.
+    $exchange = getExchangeRates();
+    $this->pageData['rates'] = !empty($exchange->rates) ? $exchange->rates : new stdClass();
+
     $this->load->view('home', $this->pageData);
 	}
 }
