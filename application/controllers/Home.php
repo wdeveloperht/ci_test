@@ -22,7 +22,6 @@ class Home extends CI_Controller {
 
     // get Count of active products which don't belong to any user.
     $active_products_dont_any_user = $this->mGlobal->getDontSellerProductsCount();
-
     $this->pageData['counts'] = [
       'verified_user' => $verified_user_count,
       'verified_user_attached_products' => $verified_user_attached_products,

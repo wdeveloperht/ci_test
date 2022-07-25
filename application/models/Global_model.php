@@ -11,98 +11,88 @@ class Global_model extends CI_Model {
       $this->db->where($where);
     }
     $query = $this->db->get();
-    $result = $query->first_row();
+    $result = $query->row();
     $query->free_result();
-
-    return $result->qty;
+    if ( !empty($result) && !empty($result->qty) ) {
+      return $result->qty;
+    }
+    return 0;
   }
 
   function getCountVerifiedUserByAttachedProducts() {
-    $sql = 'SELECT
-              count( u.id ) AS qty
-            FROM
-              users u
-              INNER JOIN sellers s ON s.id_user = u.id
-              INNER JOIN products p ON p.id = s.id_product AND p.status = 1
-            WHERE
-              u.status = 1 AND u.verified = "yes"';
-    $query =  $this->db->query($sql);
-    $result = $query->first_row();
+    $this->db->select('count( u.id ) AS qty');
+    $this->db->from('users u');
+    $this->db->join('sellers s', 's.id_user = u.id', 'INNER');
+    $this->db->join('products p', 'p.id = s.id_product AND p.status = 1', 'INNER');
+    $this->db->where(array('u.status' => 1, 'u.verified' =>'yes' ));
+    $query = $this->db->get();
+    $row = $query->row();
+    $query->free_result();
+    if ( !empty($row) && !empty($row->qty) ) {
+      return $row->qty;
+    }
 
-    return $result->qty;
+    return 0;
   }
 
   function getDontSellerProductsCount() {
-    $sql = 'SELECT
-             count( p.id ) AS qty
-          FROM
-            products p
-          LEFT JOIN sellers s ON s.id_product = p.id
-          WHERE
-            p.status = 1 AND s.id_user is NULL';
-    $query =  $this->db->query($sql);
-    $result = $query->first_row();
-    $query->free_result();
-    return $result->qty;
+    $this->db->select('count( p.id ) AS qty');
+    $this->db->from('products p');
+    $this->db->join('sellers s', 's.id_product = p.id', 'LEFT');
+    $this->db->where(array('p.status' => 1, 's.id_user is NULL' => NULL ));
+    $query = $this->db->get();
+    $row = $query->row();
+    if ( !empty($row) && !empty($row->qty) ) {
+      return $row->qty;
+    }
+
+    return 0;
   }
 
   function getUserProducts() {
-    $sql = 'SELECT
-              u.name,
-              count(p.id) AS qty
-            FROM
-                users u
-            INNER JOIN sellers s ON s.id_user = u.id
-            INNER JOIN products p ON p.id = s.id_product AND p.status = 1
-            WHERE
-                u.status = 1 AND u.verified = "yes"
-            GROUP BY u.id';
-
-    $query =  $this->db->query($sql);
+    $this->db->select('u.name, count(p.id) AS qty');
+    $this->db->from('users u');
+    $this->db->join('sellers s', 's.id_user = u.id', 'INNER');
+    $this->db->join('products p', 'p.id = s.id_product AND p.status = 1', 'INNER');
+    $this->db->where(array('u.status' => 1, 'u.verified' => 'yes'));
+    $this->db->group_by('u.id');
+    $query = $this->db->get();
     $result = $query->result();
-    $query->free_result();
 
-    return $result;
+    if ( !empty($result) ) {
+      return $result;
+    }
+
+    return array();
   }
 
   function getActiveAttachedProducts() {
-    $sql = 'SELECT
-              s.id_product,
-              SUM(s.per_price * qty ) AS price
-              -- GROUP_CONCAT(DISTINCT u.name) AS users
-              FROM
-                  users u
-              INNER JOIN sellers s ON s.id_user = u.id
-              INNER JOIN products p ON p.id = s.id_product AND p.status = 1
-              WHERE
-                  u.status = 1 AND u.verified = "yes"
-          GROUP BY s.id_product';
-
-    $query =  $this->db->query($sql);
-    $result = $query->result();
-    $query->free_result();
-
-    return $result;
+    $this->db->select('SUM(s.per_price * qty ) AS price');
+    $this->db->from('users u');
+    $this->db->join('sellers s', 's.id_user = u.id', 'INNER');
+    $this->db->join('products p', 'p.id = s.id_product AND p.status = 1', 'INNER');
+    $this->db->where(array('u.status' => 1, 'u.verified' => 'yes'));
+    $query = $this->db->get();
+    $row = $query->row();
+    if ( !empty($row) && !empty($row->price) ) {
+      return $row->price;
+    }
+    return 0;
   }
 
   function getActiveProductsPerUser() {
-    $sql = 'SELECT
-              u.id,
-              u.name,
-              SUM(s.per_price * qty ) AS price
-              -- GROUP_CONCAT(DISTINCT s.id_product) AS product_ids
-              FROM
-                  users u
-              INNER JOIN sellers s ON s.id_user = u.id
-              INNER JOIN products p ON p.id = s.id_product AND p.status = 1
-              WHERE
-                  u.status = 1 AND u.verified = "yes"
-          GROUP BY s.id_user';
-
-    $query =  $this->db->query($sql);
+    $this->db->select('u.id, u.name, SUM(s.per_price * qty ) AS price');
+    $this->db->from('users u');
+    $this->db->join('sellers s', 's.id_user = u.id', 'INNER');
+    $this->db->join('products p', 'p.id = s.id_product AND p.status = 1', 'INNER');
+    $this->db->where(array('u.status' => 1, 'u.verified' => 'yes'));
+    $this->db->group_by('s.id_user');
+    $query = $this->db->get();
     $result = $query->result();
-    $query->free_result();
+    if ( !empty($result) ) {
+      return $result;
+    }
 
-    return $result;
+    return array();
   }
 }
