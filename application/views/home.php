@@ -102,12 +102,19 @@
               <th>User name</th>
               <th>Count</th>
             </tr>
-            <?php foreach( $user_products as $item ) { ?>
+            <?php
+            $total_qty = 0;
+            foreach( $user_products as $item ) {
+              $total_qty += $item->qty; ?>
               <tr>
                 <td><?php echo $item->name; ?></td>
                 <td><?php echo $item->qty; ?></td>
-               </tr>
+              </tr>
             <?php } ?>
+            <tr>
+              <th>Total Sum</th>
+              <th> <b><?php echo $total_qty; ?></b></th>
+            </tr>
           </table>
         <?php } else {
           echo '<p> Result not fund! </p>';
