@@ -112,7 +112,7 @@
               </tr>
             <?php } ?>
             <tr>
-              <th>Total Sum</th>
+              <th>Total Count</th>
               <th> <b><?php echo $total_qty; ?></b></th>
             </tr>
           </table>
