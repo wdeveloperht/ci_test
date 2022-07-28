@@ -20,16 +20,17 @@ class Global_model extends CI_Model {
   }
 
   function getCountVerifiedUserByAttachedProducts() {
-    $this->db->select('count( u.id ) AS qty');
+    $this->db->select('u.id');
     $this->db->from('users u');
     $this->db->join('sellers s', 's.id_user = u.id', 'INNER');
     $this->db->join('products p', 'p.id = s.id_product AND p.status = 1', 'INNER');
     $this->db->where(array('u.status' => 1, 'u.verified' =>'yes' ));
+    $this->db->group_by('u.id');
     $query = $this->db->get();
-    $row = $query->row();
+    $qty = $query->num_rows();
     $query->free_result();
-    if ( !empty($row) && !empty($row->qty) ) {
-      return $row->qty;
+    if ( !empty($qty) ) {
+      return $qty;
     }
 
     return 0;
@@ -50,7 +51,7 @@ class Global_model extends CI_Model {
   }
 
   function getUserProducts() {
-    $this->db->select('u.name, count(p.id) AS qty');
+    $this->db->select('u.name, SUM(s.qty) AS qty');
     $this->db->from('users u');
     $this->db->join('sellers s', 's.id_user = u.id', 'INNER');
     $this->db->join('products p', 'p.id = s.id_product AND p.status = 1', 'INNER');

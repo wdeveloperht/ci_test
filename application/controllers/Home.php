@@ -11,7 +11,6 @@ class Home extends CI_Controller {
         'status' => 1,
         'verified' => 'yes'
       ]);
-
     // get Count of active and verified users who have attached active products.
     $verified_user_attached_products = $this->mGlobal->getCountVerifiedUserByAttachedProducts();
 
