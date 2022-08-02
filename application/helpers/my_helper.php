@@ -83,3 +83,79 @@ if (!function_exists('last_sql')) {
     }
   }
 }
+
+
+if ( !function_exists('html_main_menu') ) {
+  function html_main_menu() {
+    $CI = &get_instance();
+    $userRole = $CI->userRole;
+    $module   = $CI->module;
+    $mainMenu = $CI->settings['mainMenu'];
+    $notAllowedController = $CI->settings['notAllowedController'];
+    ob_start();
+    ?>
+    <ul id="main-menu" class="main-menu">
+      <?php
+       if ( !empty($mainMenu) ) {
+        foreach ( $mainMenu as $key => $menu ) {
+          if ( !empty($notAllowedController[$userRole]) && in_array($key, array_keys($notAllowedController[$userRole])) && empty($notAllowedController[$userRole][$key]) ) {
+            continue;
+          }
+        ?>
+          <li class="root-level <?php echo ($module == $key) ? 'active' : ''; ?>">
+            <a href="<?php echo site_url( [ 'user', $key] ); ?>">
+              <span><?php echo $menu; ?></span>
+            </a>
+          </li>
+        <?php
+        }
+      }
+     ?>
+      <li class="root-level">
+        <a href="<?php echo site_url( ['logout'] ); ?>">
+          <span>Log out</span>
+        </a>
+      </li>
+    </ul>
+    <?php
+    return ob_get_clean();
+  }
+}
+
+if ( !function_exists('verify_mail_template') ) {
+  function verify_mail_template( $args = [] ) {
+    ob_start();
+    ?>
+    <div>
+      <h2>Hi <b>{{USER_NAME}}</b></h2>
+      <div>
+        <p>Click on <a href="{{VERIFY_EMAIL_LINK}}" target="_blank">Verify Email</a> link to activate your profile. </p>
+        <p>Thank you for registering!</p>
+      </div>
+    </div>
+    <?php
+    $text = ob_get_clean();
+    $text = str_replace('{{USER_NAME}}', $args['name'], $text);
+    $text = str_replace('{{VERIFY_EMAIL_LINK}}', site_url(['user', 'verify-email', md5($args['email']) ]), $text);
+
+    return $text;
+  }
+}
+
+
+if ( !function_exists('rand_value') ) {
+  function rand_value($isnumber = false){
+    if ( $isnumber ) {
+      $str = mt_rand(100000000, 999999999); // lenght 9
+    }
+    else {
+      $string = "0123456789abcdefghijklmnopqrstuvwxyz";
+      $str = "";
+      for($i = 0; $i < 25; $i++)  {
+        $index = mt_rand(0, 35);
+        $str .= $string[$index];
+      }
+    }
+    return $str;
+  }
+}

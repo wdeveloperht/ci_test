@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array( 'database' );
+$autoload['libraries'] = array( 'database', 'session', 'pagination', 'form_validation', 'MY_email' );
 
 /*
 | -------------------------------------------------------------------
@@ -89,7 +89,7 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('my');
+$autoload['helper'] = array('my', 'url', 'form', 'file', 'html', 'cookie');
 
 /*
 | -------------------------------------------------------------------
@@ -103,7 +103,7 @@ $autoload['helper'] = array('my');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array( 'my_config' );
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array( 'Global_model' => 'mGlobal' );
+$autoload['model'] = array( 'Global_model' => 'mGlobal', 'admin/User_model' => 'mUser' );

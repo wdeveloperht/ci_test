@@ -1,0 +1,94 @@
+body {
+	
+}
+
+.clearfix {
+  clear: both !important;
+}
+
+.none {
+  display: none;
+}
+.page-container,
+.main-content {
+  min-height: 100vh;
+}
+.form-registratio-success {
+  color: rgb(30 120 49);
+}
+.form-login-error,
+.form-registratio-error {
+  color: rgb(215 16 16);;
+}
+.error-msg {
+  display: block;
+  color: rgb(215 16 16);;
+}
+.page-container .sidebar-menu {
+  display: table-cell;
+  vertical-align: top;
+  background: #303641;
+  width: 200px;
+  position: relative;
+  z-index: 100;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.main-menu {
+  padding: 0 5px;
+}
+.main-menu .root-level {
+ list-style-type: none;
+}
+.main-menu .root-level.active,
+.main-menu .root-level:hover {
+  background: #fff;
+}
+.main-menu .root-level a {
+  color: #fff;
+  text-decoration: none;
+}
+.main-menu .root-level.active a,
+.main-menu .root-level:hover a {
+  color: #303641;
+}
+
+
+.page-container .main-content {
+  position: relative;
+  display: table-cell;
+  vertical-align: top;
+  padding: 20px;
+  background: #ffffff;
+  width: calc(100vw - 200px);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.table-bordered .quick-actions {
+  width:260px;
+}
+.imageBoxPreview {
+  margin-top: 4px;
+}
+
+.pagination .page-item a {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #007bff;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  text-decoration: none;
+}
+.pagination .page-item a.active,
+.pagination .page-item a:hover {
+  color: #0056b3;
+  text-decoration: none;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
