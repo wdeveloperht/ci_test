@@ -94,7 +94,7 @@ class MyProducts extends My_Controller {
       $product = $this->mGlobal->getById('products', $id_product);
       $obj = $this->mGlobal->getWhere('sellers', ['sellers.id' => $id, 'sellers.id_user' => $this->userId, 'sellers.id_product' => $id_product] );
     }
-    if ( empty($obj) ) {
+	if ( empty($obj) || empty($product) ) {
       redirect( site_url( ['user', 'myproducts', 'index', $pageNum] ) );
     }
     // init validation.
